@@ -31,7 +31,8 @@ class YOLOLOSS:
         new_target = tf.concat([target[...,1:3],tf.math.log(
             (1e-16 + target[..., 3:5] / anchors))],axis=-1)
         box_loss = self.mse_loss(new_predictions[object_score],new_target[object_score])
-        class_loss = self.cce_loss(tf.nn.softmax(predictions[...,5:][object_score]),target[...,5:][object_score])
+        class_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(tf.sigmoid(predictions[...,5:][object_score]),\
+            target[...,5:][object_score]))
         print(no_object_loss.numpy(),object_loss.numpy(),box_loss.numpy(),class_loss.numpy())
         return self.lambda_class*class_loss + self.lambda_noobj*no_object_loss + \
             self.lambda_obj*object_loss + self.lambda_box*box_loss

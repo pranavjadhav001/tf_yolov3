@@ -30,8 +30,8 @@ class DataGenerator(keras.utils.Sequence):
 		target_batch = [np.zeros((self.batch_size,9 // 3, s, s, 5+self.num_classes)) for s in self.scales]
 		# Find list of IDs
 		for cnt,i in enumerate(indexes):
-			label_path = os.path.join(self.label_dir, self.annotations.iloc[index, 1])
-			img_path = os.path.join(self.img_dir, self.annotations.iloc[index, 0])
+			label_path = os.path.join(self.label_dir, self.annotations.iloc[i, 1])
+			img_path = os.path.join(self.img_dir, self.annotations.iloc[i, 0])
 			image,target = self.convert_to_targets(img_path, label_path)
 			img_batch[cnt,:] = image
 			target_batch[0][cnt,:] = target[0]
@@ -66,7 +66,7 @@ class DataGenerator(keras.utils.Sequence):
 		image = Image.open(image_path).convert("RGB")
 		image = np.array(image)
 		image,bboxes = letterbox_image_label(image,bboxes)
-		targets = [np.zeros((9 // 3, s, s, 5+self.num_classes)) for s in self.scales]
+		targets = [np.zeros((9 // 3, s, s, 5+self.num_classes),dtype=np.float32) for s in self.scales]
 		for box in bboxes:
 			iou_anchors = self.iou_width_height(box[2:4],self.anchors)
 			anchor_indices = np.argsort(iou_anchors)[::-1]
@@ -87,8 +87,8 @@ class DataGenerator(keras.utils.Sequence):
 					)  # can be greater than 1 since it's relative to cell
 					box_coordinates = [x_cell, y_cell, width_cell, height_cell]
 					targets[scale_idx][anchor_on_scale, i, j, 1:5] = box_coordinates
-					targets[scale_idx][anchor_on_scale, i, j, 4+int(class_label)] = 1 
+					targets[scale_idx][anchor_on_scale, i, j, 5+int(class_label)] = 1 
 					has_anchor[scale_idx] = True
 				elif not anchor_taken and iou_anchors[anchor_idx] > 0.5:
 					targets[scale_idx][anchor_on_scale, i, j, 0] = -1  # ignore prediction
-		return image, targets
+		return image/255.0, targets
