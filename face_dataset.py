@@ -21,7 +21,7 @@ class DataGenerator(keras.utils.Sequence):
         self.batch_size = batch_size
         self.class_map = {'face':0,'face_mask':1}
         self.shuffle = True
-        self.num_classes = 20
+        self.num_classes = 2
         self.on_epoch_end()
 
     def __len__(self):
