@@ -14,7 +14,7 @@ class YOLOLOSS:
         self.anchors = np.array(self.anchors).reshape(3,1,3,1,1,2)
         self.lambda_class = 1
         self.lambda_noobj = 1
-        self.lambda_obj = 1
+        self.lambda_obj = 10
         self.lambda_box = 1
         
     def loss_per_scale(self,predictions,target,anchors):
@@ -33,7 +33,7 @@ class YOLOLOSS:
         box_loss = self.mse_loss(new_predictions[object_score],new_target[object_score])
         class_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(tf.sigmoid(predictions[...,5:][object_score]),\
             target[...,5:][object_score]))
-        print(no_object_loss.numpy(),object_loss.numpy(),box_loss.numpy(),class_loss.numpy())
+        #print(no_object_loss.numpy(),object_loss.numpy(),box_loss.numpy(),class_loss.numpy())
         return self.lambda_class*class_loss + self.lambda_noobj*no_object_loss + \
             self.lambda_obj*object_loss + self.lambda_box*box_loss
     
