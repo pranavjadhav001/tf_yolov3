@@ -15,7 +15,8 @@ ANCHORS = [
     [(0.064, 0.10), (0.105, 0.15), (0.154, 0.245)],
     [(0.011, 0.02), (0.021, 0.038), (0.038, 0.065)],
 ]
-datagen = DataGenerator(img_dir='/content/drive/MyDrive/face_dataset/val',label_dir='/content/drive/MyDrive/face_dataset/val',anchors=ANCHORS,batch_size=8)
+datagen = DataGenerator(img_dir='/content/drive/MyDrive/face_dataset/train',\
+    label_dir='/content/drive/MyDrive/face_dataset/train',anchors=ANCHORS,batch_size=8)
 
 model= get_model(input_shape=(416,416,3),num_classes=2)
 custom_loss = YOLOLOSS()
