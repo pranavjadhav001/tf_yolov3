@@ -5,5 +5,5 @@ link : https://arxiv.org/pdf/1804.02767.pdf
 - [x] Model Architectures
 - [x] Loss
 - [x] Training
-- [ ] Inference
+- [x] Inference
 - [x] DataGenerator 
