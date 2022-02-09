@@ -7,7 +7,8 @@ link : https://arxiv.org/pdf/1804.02767.pdf
 - [x] Loss
 - [x] Training
 - [x] Inference
-- [x] DataGenerator 
+- [x] DataGenerator
+- [ ] Benchmarking
 
 ## References
 - Aladdin Persson : https://www.youtube.com/watch?v=Grir6TZbc1M
